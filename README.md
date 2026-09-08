@@ -8,6 +8,7 @@ standalone overlay. Works with and without flakes.
 | Attribute | Description | Platforms | License |
 |---|---|---|---|
 | `deepl-linux-electron` | Unofficial DeepL translator desktop client | x86_64-linux | MIT |
+| `digital-paper-companion` | Companion for Sony Digital Paper and Fujitsu Quaderno | x86_64-linux | Apache-2.0 / MIT |
 | `msty-studio` | Desktop app for local and online AI models | x86_64-linux | unfree |
 | `notion-electron` | Unofficial Notion desktop client | x86_64-linux, aarch64-linux | MIT |
 | `zen-browser-app` | Firefox-based browser focused on privacy | x86_64-linux, aarch64-linux | MPL-2.0 |
