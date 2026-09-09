@@ -20,13 +20,13 @@ appimageTools.wrapType2 {
 
   extraInstallCommands = ''
     install -Dm644 ${appimageContents}/*.desktop -t $out/share/applications
+    install -Dm644 ${./icon.svg} $out/share/icons/hicolor/scalable/apps/${pname}.svg
     for f in $out/share/applications/*.desktop; do
-      sed -i 's/^Exec=.*/Exec=${pname} %U/' "$f"
+      sed -i \
+        -e 's/^Exec=.*/Exec=${pname} %U/' \
+        -e 's/^Icon=.*/Icon=${pname}/' \
+        "$f"
     done
-    if [ -d ${appimageContents}/usr/share/icons ]; then
-      mkdir -p $out/share
-      cp -r ${appimageContents}/usr/share/icons $out/share/
-    fi
   '';
 
   meta = {
