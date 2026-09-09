@@ -7,11 +7,11 @@
 let
   pname = "digital-paper-companion";
   # Upstream tags releases as v<version>-<build>.
-  version = "0.4.1-1";
+  version = "0.4.1-2";
 
   src = fetchurl {
     url = "https://github.com/oemaix/digital-paper-companion/releases/download/v${version}/Digital.Paper.Companion_${version}_amd64.AppImage";
-    hash = "sha256-YCi9m5ryW/Hag8IUKHvJ8R0q/VWJxac5i1//la7bOoo=";
+    hash = "sha256-Eq0akv2ywbnTiirNuMGwS5FeoHaiYfiy3VA9+Hwd15Q=";
   };
 
   appimageContents = appimageTools.extract { inherit pname version src; };
