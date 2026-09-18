@@ -11,11 +11,12 @@ standalone overlay. Works with and without flakes.
 | `digital-paper-companion` | Companion for Sony Digital Paper and Fujitsu Quaderno | x86_64-linux | Apache-2.0 / MIT |
 | `msty-studio` | Desktop app for local and online AI models | x86_64-linux | unfree |
 | `notion-electron` | Unofficial Notion desktop client | x86_64-linux, aarch64-linux | MIT |
+| `vireo` | GNOME-native email client (IMAP/SMTP, OAuth) | linux | AGPL-3.0-or-later |
 | `zen-browser-app` | Firefox-based browser focused on privacy | x86_64-linux, aarch64-linux | MPL-2.0 |
 
-All packages repackage the official binary releases (AppImages).
-`zen-browser-app` carries the `-app` suffix so the overlay will not shadow a
-future `zen-browser` attribute in nixpkgs.
+Most packages repackage official binary releases (AppImages). `vireo` is built
+from source. `zen-browser-app` carries the `-app` suffix so the overlay will
+not shadow a future `zen-browser` attribute in nixpkgs.
 
 ## Try a package without installing
 

@@ -6,5 +6,6 @@
   digital-paper-companion = pkgs.callPackage ./digital-paper-companion { };
   msty-studio = pkgs.callPackage ./msty-studio { };
   notion-electron = pkgs.callPackage ./notion-electron { };
+  vireo = pkgs.callPackage ./vireo { };
   zen-browser-app = pkgs.callPackage ./zen-browser-app { };
 }
