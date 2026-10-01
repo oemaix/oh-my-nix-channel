@@ -7,11 +7,11 @@
 
 let
   pname = "msty-studio";
-  version = "2.0.0";
+  version = "2.9.11";
 
   src = fetchurl {
     url = "https://next-assets.msty.studio/app/releases/${version}/linux/MstyStudio_x86_64.AppImage";
-    hash = "sha256-syY2+L00SMZonqNgWrcX9aFQmWiTkU51bbSVQE/1ltQ=";
+    hash = "sha256-K1rbgQGkVFY/qKW2A8YeaxDVFZtvCeV2AJQl73G5tcI=";
   };
 
   appimageContents = appimageTools.extract { inherit pname version src; };

@@ -18,17 +18,17 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
-  pname = "vireo";
-  version = "1.33.4";
+  pname = "hylki";
+  version = "1.41.1";
 
   src = fetchFromGitHub {
     owner = "hyprlab";
-    repo = "vireo";
+    repo = "hylki";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-CYQfdKkevj9D0AP4xSm1EkYbzlC2xGPMqK4I7yd6PIk=";
+    hash = "sha256-KSnwQtgpCI1wk8dkfv1JMzS4wg1ecuFtVmG7ysIR+xY=";
   };
 
-  cargoHash = "sha256-OnHXtsdmjKHuCC3nxVv7ixwmMXBzU9TPTAYY3E1aYuQ=";
+  cargoHash = "sha256-AELxGexoKp9vo8P3JW0yM7RpIz7G6qviuTLEzoAK0FM=";
 
   nativeBuildInputs = [
     pkg-config
@@ -54,34 +54,34 @@ rustPlatform.buildRustPackage (finalAttrs: {
   env.OPENSSL_NO_VENDOR = 1;
 
   postInstall = ''
-    install -Dm644 data/icons/hicolor/256x256/apps/co.hyprlab.Vireo.png \
-      $out/share/icons/hicolor/256x256/apps/co.hyprlab.Vireo.png
-    install -Dm644 data/icons/hicolor/512x512/apps/co.hyprlab.Vireo.png \
-      $out/share/icons/hicolor/512x512/apps/co.hyprlab.Vireo.png
-    install -Dm644 data/icons/hicolor/scalable/apps/co.hyprlab.Vireo.svg \
-      $out/share/icons/hicolor/scalable/apps/co.hyprlab.Vireo.svg
+    install -Dm644 data/icons/hicolor/256x256/apps/co.hyprlab.Hylki.png \
+      $out/share/icons/hicolor/256x256/apps/co.hyprlab.Hylki.png
+    install -Dm644 data/icons/hicolor/512x512/apps/co.hyprlab.Hylki.png \
+      $out/share/icons/hicolor/512x512/apps/co.hyprlab.Hylki.png
+    install -Dm644 data/icons/hicolor/scalable/apps/co.hyprlab.Hylki.svg \
+      $out/share/icons/hicolor/scalable/apps/co.hyprlab.Hylki.svg
 
     install -d $out/share/applications
-    msgfmt --desktop --template=data/co.hyprlab.Vireo.desktop -d po \
-      -o $out/share/applications/co.hyprlab.Vireo.desktop
+    msgfmt --desktop --template=data/co.hyprlab.Hylki.desktop -d po \
+      -o $out/share/applications/co.hyprlab.Hylki.desktop
 
-    install -Dm644 data/co.hyprlab.Vireo.metainfo.xml \
-      $out/share/metainfo/co.hyprlab.Vireo.metainfo.xml
+    install -Dm644 data/co.hyprlab.Hylki.metainfo.xml \
+      $out/share/metainfo/co.hyprlab.Hylki.metainfo.xml
 
     for po in po/*.po; do
       lang=$(basename "$po" .po)
       install -d $out/share/locale/$lang/LC_MESSAGES
-      msgfmt -o $out/share/locale/$lang/LC_MESSAGES/vireo.mo "$po"
+      msgfmt -o $out/share/locale/$lang/LC_MESSAGES/hylki.mo "$po"
     done
   '';
 
   meta = {
     description = "GNOME-native email client with IMAP/SMTP and OAuth";
-    homepage = "https://vireo.hyprlab.co";
-    changelog = "https://github.com/hyprlab/vireo/releases/tag/v${finalAttrs.version}";
+    homepage = "https://hylki.hyprlab.co";
+    changelog = "https://github.com/hyprlab/hylki/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.agpl3Plus;
     maintainers = [ ];
-    mainProgram = "vireo";
+    mainProgram = "hylki";
     platforms = lib.platforms.linux;
   };
 })

@@ -11,11 +11,12 @@ standalone overlay. Works with and without flakes.
 | `digital-paper-companion` | Companion for Sony Digital Paper and Fujitsu Quaderno | x86_64-linux | Apache-2.0 / MIT |
 | `msty-studio` | Desktop app for local and online AI models | x86_64-linux | unfree |
 | `notion-electron` | Unofficial Notion desktop client | x86_64-linux, aarch64-linux | MIT |
-| `vireo` | GNOME-native email client (IMAP/SMTP, OAuth) | linux | AGPL-3.0-or-later |
+| `hylki` | GNOME-native email client (IMAP/SMTP, OAuth). `vireo` is the same package | linux | AGPL-3.0-or-later |
 | `zen-browser-app` | Firefox-based browser focused on privacy | x86_64-linux, aarch64-linux | MPL-2.0 |
 
-Most packages repackage official binary releases (AppImages). `vireo` is built
-from source. `zen-browser-app` carries the `-app` suffix so the overlay will
+Most packages repackage official binary releases (AppImages). `hylki` is built
+from source. Upstream renamed the project from Vireo; the `vireo` attribute
+still points at the same package. `zen-browser-app` carries the `-app` suffix so the overlay will
 not shadow a future `zen-browser` attribute in nixpkgs.
 
 ## Try a package without installing
@@ -148,7 +149,7 @@ Bump `version` in `pkgs/<name>/default.nix`, refresh the hash with
 expected value at build time).
 
 New Msty Studio versions are announced at
-`https://next-assets.msty.studio/app/beta/linux/latest-linux.yml`;
+`https://next-assets.msty.studio/app/latest/linux/latest-linux.yml`;
 the versioned download lives at
 `https://next-assets.msty.studio/app/releases/<version>/linux/MstyStudio_x86_64.AppImage`.
 

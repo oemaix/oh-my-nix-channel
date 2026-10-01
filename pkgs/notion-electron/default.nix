@@ -7,16 +7,16 @@
 
 let
   pname = "notion-electron";
-  version = "2.4.0";
+  version = "2.4.1";
 
   sources = {
     x86_64-linux = fetchurl {
       url = "https://github.com/anechunaev/notion-electron/releases/download/v${version}/Notion_Electron-${version}-x86_64.AppImage";
-      hash = "sha256-jpEQb4k7nWGefzspAPppxisJMlmBNUxRwSfHsylaQKY=";
+      hash = "sha256-312X9AeidFc2qr1iD20vMefmDQyu6I7HCm7SZM+Wo7E=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/anechunaev/notion-electron/releases/download/v${version}/Notion_Electron-${version}-arm64.AppImage";
-      hash = "sha256-m4zFP5K85Y5vbdSDJ6Vh+xAtgi2138yY9djvk2qqWeA=";
+      hash = "sha256-PL8cqhbTs3eJlfonl9JOXrh9fg4RWPNmxMZt9saec8A=";
     };
   };
 

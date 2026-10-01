@@ -9,16 +9,16 @@
 
 let
   pname = "zen-browser-app";
-  version = "1.22b";
+  version = "1.22.3b";
 
   sources = {
     x86_64-linux = fetchurl {
       url = "https://github.com/zen-browser/desktop/releases/download/${version}/zen-x86_64.AppImage";
-      hash = "sha256-K6CabCTOizPOsTpvhPpmDKZcj9KaFky5vPNLYDBz76g=";
+      hash = "sha256-7SosMpBmwMLR8dPXzBzWZgXTYINJwVSKYsFZJpqYiRQ=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/zen-browser/desktop/releases/download/${version}/zen-aarch64.AppImage";
-      hash = "sha256-8d2lw5IVo9QyY604A96ogZXH54PLmkFcC/GGKBRJmN4=";
+      hash = "sha256-9UWcdHK+DpgJP93PaKOl6RMfi5FfC6ehkG5sunbZqqI=";
     };
   };
 
