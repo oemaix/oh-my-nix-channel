@@ -15,20 +15,22 @@
   libsecret,
   poppler,
   dbus,
+  wayland,
+  shared-mime-info,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "hylki";
-  version = "1.41.1";
+  version = "1.46.0";
 
   src = fetchFromGitHub {
     owner = "hyprlab";
     repo = "hylki";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-KSnwQtgpCI1wk8dkfv1JMzS4wg1ecuFtVmG7ysIR+xY=";
+    hash = "sha256-Fs0DwemwMpk+zSszXamPeI5p0kgJ7ZJmOLyxgYi9Gpg=";
   };
 
-  cargoHash = "sha256-AELxGexoKp9vo8P3JW0yM7RpIz7G6qviuTLEzoAK0FM=";
+  cargoHash = "sha256-/jtnNjIq9RdStUlJaGp/lboMRjyKyJoe/alRH1XyoTM=";
 
   nativeBuildInputs = [
     pkg-config
@@ -38,6 +40,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     glib
   ];
 
+  # guess_mime() asks GIO, which reads this database.
   buildInputs = [
     gtk4
     libadwaita
@@ -48,10 +51,22 @@ rustPlatform.buildRustPackage (finalAttrs: {
     libsecret
     poppler
     dbus
+    wayland
+    shared-mime-info
   ];
 
   # native-tls / openssl-sys should use the Nix openssl, not a vendored copy.
   env.OPENSSL_NO_VENDOR = 1;
+
+  # GIO only sees the suffix table when this database is on XDG_DATA_DIRS.
+  # shared-mime-info has no setup hook, so both the tests and the wrapper need it.
+  preCheck = ''
+    export XDG_DATA_DIRS="${shared-mime-info}/share''${XDG_DATA_DIRS:+:}$XDG_DATA_DIRS"
+  '';
+
+  preFixup = ''
+    gappsWrapperArgs+=(--prefix XDG_DATA_DIRS : "${shared-mime-info}/share")
+  '';
 
   postInstall = ''
     install -Dm644 data/icons/hicolor/256x256/apps/co.hyprlab.Hylki.png \
