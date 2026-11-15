@@ -1,12 +1,12 @@
 # Upstream is a small Electron app with no runtime npm dependencies.
-# It declares electron ^42.11.16; use the binary build so this overlay
-# does not compile Chromium.
+# It declares electron ^42.11.16. That major is EOL in nixpkgs, so use the
+# next supported binary (electron_43-bin) instead of compiling Chromium.
 {
   lib,
   stdenvNoCC,
   fetchFromGitHub,
   makeWrapper,
-  electron_42-bin,
+  electron_43-bin,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -34,20 +34,21 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -Dm644 icon.png -t $out/share/dl-desktop
     install -Dm644 scripts/*.js -t $out/share/dl-desktop/scripts
 
-    install -Dm644 ro.go.hmlendea.DL-Desktop.desktop -t $out/share/applications
-    # Upstream StartupWMClass is the product name "DL: language lessons".
-    # The Wayland app id has to be the desktop-file id, which is build.appId.
-    substituteInPlace $out/share/applications/ro.go.hmlendea.DL-Desktop.desktop \
-      --replace-fail "StartupWMClass=DL: language lessons" "StartupWMClass=ro.go.hmlendea.DL-Desktop"
+    # Electron overwrites CHROME_DESKTOP at startup. With no package.json
+    # desktopName, the Wayland app id is the slug of productName
+    # "DL: language lessons": dl-language-lessons. The desktop file name,
+    # StartupWMClass, and icon have to be that id or GNOME keeps the
+    # generic executable icon.
+    install -Dm644 ro.go.hmlendea.DL-Desktop.desktop \
+      $out/share/applications/dl-language-lessons.desktop
+    substituteInPlace $out/share/applications/dl-language-lessons.desktop \
+      --replace-fail "StartupWMClass=DL: language lessons" "StartupWMClass=dl-language-lessons" \
+      --replace-fail "Icon=ro.go.hmlendea.DL-Desktop" "Icon=dl-language-lessons"
 
     install -Dm644 icon.png \
-      $out/share/icons/hicolor/512x512/apps/ro.go.hmlendea.DL-Desktop.png
+      $out/share/icons/hicolor/512x512/apps/dl-language-lessons.png
 
-    # Without CHROME_DESKTOP Electron leaves the Wayland app id empty and
-    # GNOME looks up an Electron icon. The value is this desktop file's id.
-    makeWrapper ${lib.getExe electron_42-bin} $out/bin/dl-desktop \
-      --set CHROME_DESKTOP "ro.go.hmlendea.DL-Desktop.desktop" \
-      --add-flags "--class=ro.go.hmlendea.DL-Desktop" \
+    makeWrapper ${lib.getExe electron_43-bin} $out/bin/dl-desktop \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --add-flags $out/share/dl-desktop
 

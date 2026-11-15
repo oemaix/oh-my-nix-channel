@@ -17,8 +17,8 @@ standalone overlay. Works with and without flakes.
 | `zen-browser-app` | Firefox-based browser focused on privacy | x86_64-linux, aarch64-linux | MPL-2.0 |
 
 Most packages repackage official binary releases (AppImages). `hylki` and
-`dl-desktop` are built from source. `dl-desktop` runs on the nixpkgs Electron 42
-binary. Upstream renamed Hylki from Vireo; the `vireo` attribute
+`dl-desktop` are built from source. `dl-desktop` runs on the nixpkgs Electron 43
+binary (upstream still declares Electron 42, which nixpkgs marks EOL). Upstream renamed Hylki from Vireo; the `vireo` attribute
 still points at the same package. `zen-browser-app` carries the `-app` suffix so the overlay will
 not shadow a future `zen-browser` attribute in nixpkgs.
 
