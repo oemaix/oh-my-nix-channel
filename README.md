@@ -178,3 +178,7 @@ nix fmt <files>
 nix flake check    # builds every package
 nix build .#<name>
 ```
+
+Opening the folder in a container is optional. The environment is still this
+flake. On a NixOS host the container bind-mounts the host store and does not
+install a second Nix. Without Docker, the commands above are unchanged.

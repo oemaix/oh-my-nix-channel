@@ -1,0 +1,9 @@
+# Credential mounts for the NixOS profile. Do not mount $HOME. Do not write a gid.
+# Host gitconfig is $XDG_CONFIG_HOME/git/config. Included read-only; the container
+# writes its own ~/.gitconfig. origin is https://github.com and uses
+# `gh auth git-credential` (absolute store path). The global libsecret helper
+# is cleared for that host, so the session bus is not mounted.
+source=${localEnv:HOME}/.config/git/config,target=/etc/gitconfig.host,type=bind,readonly
+source=${localEnv:HOME}/.config/gh,target=/home/dev/.config/gh,type=bind,readonly
+# Host nix.conf already sets experimental-features.
+source=/etc/nix/nix.conf,target=/etc/nix/nix.conf,type=bind,readonly

@@ -5,3 +5,4 @@ result-*
 tmp/
 *~
 *.swp
+.devcontainer/host-user
