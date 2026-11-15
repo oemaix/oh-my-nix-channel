@@ -10,6 +10,7 @@ standalone overlay. Works with and without flakes.
 | `deepl-linux-electron` | Unofficial DeepL translator desktop client | x86_64-linux | MIT |
 | `digital-paper-companion` | Companion for Sony Digital Paper and Fujitsu Quaderno | x86_64-linux | Apache-2.0 / MIT |
 | `dl-desktop` | Unofficial Duolingo desktop client | x86_64-linux, aarch64-linux | GPL-3.0-or-later |
+| `lv-desktop` | Unofficial Lingvist desktop client | x86_64-linux, aarch64-linux | GPL-3.0-only |
 | `msty-studio` | Desktop app for local and online AI models | x86_64-linux | unfree |
 | `notion-electron` | Unofficial Notion desktop client | x86_64-linux, aarch64-linux | MIT |
 | `hylki` | GNOME-native email client (IMAP/SMTP, OAuth). `vireo` is the same package | linux | AGPL-3.0-or-later |
