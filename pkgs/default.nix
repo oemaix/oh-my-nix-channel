@@ -8,6 +8,7 @@ in
 {
   deepl-linux-electron = pkgs.callPackage ./deepl-linux-electron { };
   digital-paper-companion = pkgs.callPackage ./digital-paper-companion { };
+  dl-desktop = pkgs.callPackage ./dl-desktop { };
   inherit hylki;
   msty-studio = pkgs.callPackage ./msty-studio { };
   notion-electron = pkgs.callPackage ./notion-electron { };

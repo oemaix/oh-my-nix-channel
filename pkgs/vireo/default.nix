@@ -11,6 +11,7 @@
   libadwaita,
   webkitgtk_6_0,
   glib-networking,
+  gst_all_1,
   openssl,
   libsecret,
   poppler,
@@ -21,16 +22,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "hylki";
-  version = "1.46.0";
+  version = "1.48.1";
 
   src = fetchFromGitHub {
     owner = "hyprlab";
     repo = "hylki";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-Fs0DwemwMpk+zSszXamPeI5p0kgJ7ZJmOLyxgYi9Gpg=";
+    hash = "sha256-AXxpxkDqaUuOzE3kWU5BZb/mtfeMEanmjh8lMLbgr7E=";
   };
 
-  cargoHash = "sha256-/jtnNjIq9RdStUlJaGp/lboMRjyKyJoe/alRH1XyoTM=";
+  cargoHash = "sha256-F1ndqkcH/sbXQ8xTGddGyFlngUApRDaTWInOoYwSkE4=";
 
   nativeBuildInputs = [
     pkg-config
@@ -53,6 +54,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     dbus
     wayland
     shared-mime-info
+    # New-mail sounds dlopen libgstreamer and play Ogg through playbin.
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
   ];
 
   # native-tls / openssl-sys should use the Nix openssl, not a vendored copy.
@@ -65,7 +70,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
   '';
 
   preFixup = ''
-    gappsWrapperArgs+=(--prefix XDG_DATA_DIRS : "${shared-mime-info}/share")
+    gappsWrapperArgs+=(
+      --prefix XDG_DATA_DIRS : "${shared-mime-info}/share"
+      --prefix LD_LIBRARY_PATH : "${lib.getLib gst_all_1.gstreamer}/lib"
+      --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "$GST_PLUGIN_SYSTEM_PATH_1_0"
+    )
+    unset GST_PLUGIN_SYSTEM_PATH_1_0
   '';
 
   postInstall = ''

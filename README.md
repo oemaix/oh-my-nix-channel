@@ -9,13 +9,15 @@ standalone overlay. Works with and without flakes.
 |---|---|---|---|
 | `deepl-linux-electron` | Unofficial DeepL translator desktop client | x86_64-linux | MIT |
 | `digital-paper-companion` | Companion for Sony Digital Paper and Fujitsu Quaderno | x86_64-linux | Apache-2.0 / MIT |
+| `dl-desktop` | Unofficial Duolingo desktop client | x86_64-linux, aarch64-linux | GPL-3.0-or-later |
 | `msty-studio` | Desktop app for local and online AI models | x86_64-linux | unfree |
 | `notion-electron` | Unofficial Notion desktop client | x86_64-linux, aarch64-linux | MIT |
 | `hylki` | GNOME-native email client (IMAP/SMTP, OAuth). `vireo` is the same package | linux | AGPL-3.0-or-later |
 | `zen-browser-app` | Firefox-based browser focused on privacy | x86_64-linux, aarch64-linux | MPL-2.0 |
 
-Most packages repackage official binary releases (AppImages). `hylki` is built
-from source. Upstream renamed the project from Vireo; the `vireo` attribute
+Most packages repackage official binary releases (AppImages). `hylki` and
+`dl-desktop` are built from source. `dl-desktop` runs on the nixpkgs Electron 42
+binary. Upstream renamed Hylki from Vireo; the `vireo` attribute
 still points at the same package. `zen-browser-app` carries the `-app` suffix so the overlay will
 not shadow a future `zen-browser` attribute in nixpkgs.
 
