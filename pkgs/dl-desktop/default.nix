@@ -6,6 +6,7 @@
   stdenvNoCC,
   fetchFromGitHub,
   makeWrapper,
+  imagemagick,
   electron_42-bin,
 }:
 
@@ -22,7 +23,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   strictDeps = true;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [
+    makeWrapper
+    imagemagick
+  ];
 
   dontConfigure = true;
   dontBuild = true;
@@ -35,8 +39,17 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -Dm644 scripts/*.js -t $out/share/dl-desktop/scripts
 
     install -Dm644 ro.go.hmlendea.DL-Desktop.desktop -t $out/share/applications
-    install -Dm644 icon.png \
-      $out/share/icons/hicolor/512x512/apps/ro.go.hmlendea.DL-Desktop.png
+
+    # The upstream PNG is 512x512. hicolor's 512x512/apps entry only matches
+    # requests of 64px and up, so menus that ask for a smaller size miss it.
+    iconName=ro.go.hmlendea.DL-Desktop
+    install -Dm644 icon.png $out/share/icons/hicolor/512x512/apps/$iconName.png
+    install -Dm644 icon.png $out/share/pixmaps/$iconName.png
+    for size in 16 22 24 32 36 48 64 72 96 128 192 256; do
+      dir=$out/share/icons/hicolor/''${size}x''${size}/apps
+      mkdir -p "$dir"
+      magick icon.png -resize "''${size}x''${size}" "$dir/$iconName.png"
+    done
 
     # Unpackaged Electron otherwise uses the class "electron", which does not
     # match StartupWMClass in the upstream desktop file.
