@@ -1,19 +1,23 @@
 # Upstream publishes Linux AppImages. The launcher icon is assets/icon.png
-# from the same tag. hicolor-icon-theme 0.18 has no 1024x1024 directory, and
-# its 512x512/apps entry only matches requests of 64px and up, so the original
-# PNG is resized into the theme sizes the app list actually looks up.
+# from the same tag. Electron publishes a Wayland app id only when
+# CHROME_DESKTOP is set; otherwise the window class stays "Electron" and
+# GNOME never opens this desktop file for the dash icon. The id is the
+# upstream electron-builder appId. The desktop file and the icon use that
+# same name. The source PNG is 1024x1024 and hicolor-icon-theme has no
+# 1024 slot, so that file is installed in the 512x512 slot the theme searches.
 {
   lib,
   stdenv,
   appimageTools,
   fetchurl,
-  runCommand,
-  imagemagick,
+  writeText,
 }:
 
 let
   pname = "lv-desktop";
   version = "0.4.0";
+  # package.json build.appId. GNOME looks up <id>.desktop and <id>.png.
+  appId = "app.lvdesktop.client";
 
   sources = {
     x86_64-linux = fetchurl {
@@ -35,33 +39,31 @@ let
     hash = "sha256-cNk4x59TL45XD7JhVL2qsSmXkvrx8+TbMNiudTQpa+E=";
   };
 
-  # Sizes listed as apps directories in hicolor-icon-theme 0.18.
-  icons = runCommand "lv-desktop-icons" { nativeBuildInputs = [ imagemagick ]; } ''
-    for size in 16 22 24 32 36 48 64 72 96 128 192 256 512; do
-      mkdir -p "$out/share/icons/hicolor/''${size}x''${size}/apps"
-      magick ${icon} -resize "''${size}x''${size}" \
-        "$out/share/icons/hicolor/''${size}x''${size}/apps/${pname}.png"
-    done
-    mkdir -p "$out/share/pixmaps"
-    magick ${icon} -resize 512x512 "$out/share/pixmaps/${pname}.png"
+  desktopItem = writeText "${appId}.desktop" ''
+    [Desktop Entry]
+    Name=LV Desktop
+    Comment=Single-window Lingvist desk client
+    Exec=${pname} %U
+    Terminal=false
+    Type=Application
+    Icon=${appId}
+    StartupWMClass=${appId}
+    Categories=Education;
   '';
 
-  appimageContents = appimageTools.extract { inherit pname version src; };
 in
 appimageTools.wrapType2 {
   inherit pname version src;
 
   extraInstallCommands = ''
-    install -Dm644 ${appimageContents}/*.desktop -t $out/share/applications
-    mkdir -p $out/share
-    cp -a ${icons}/share/. $out/share/
-    for f in $out/share/applications/*.desktop; do
-      sed -i \
-        -e 's|^Exec=.*|Exec=${pname} %U|' \
-        -e 's|^Icon=.*|Icon=${pname}|' \
-        -e 's|^Name=.*|Name=LV Desktop|' \
-        "$f"
-    done
+    install -Dm644 ${desktopItem} $out/share/applications/${appId}.desktop
+    install -Dm644 ${icon} $out/share/icons/hicolor/512x512/apps/${appId}.png
+
+    mv $out/bin/${pname} $out/bin/.${pname}-unwrapped
+    echo "#!${stdenv.shell}" > $out/bin/${pname}
+    echo "export CHROME_DESKTOP=${appId}.desktop" >> $out/bin/${pname}
+    echo "exec $out/bin/.${pname}-unwrapped \"\$@\"" >> $out/bin/${pname}
+    chmod +x $out/bin/${pname}
   '';
 
   meta = {

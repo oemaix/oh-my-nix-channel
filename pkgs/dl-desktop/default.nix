@@ -6,7 +6,6 @@
   stdenvNoCC,
   fetchFromGitHub,
   makeWrapper,
-  imagemagick,
   electron_42-bin,
 }:
 
@@ -23,10 +22,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   strictDeps = true;
 
-  nativeBuildInputs = [
-    makeWrapper
-    imagemagick
-  ];
+  nativeBuildInputs = [ makeWrapper ];
 
   dontConfigure = true;
   dontBuild = true;
@@ -39,22 +35,19 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -Dm644 scripts/*.js -t $out/share/dl-desktop/scripts
 
     install -Dm644 ro.go.hmlendea.DL-Desktop.desktop -t $out/share/applications
+    # Upstream StartupWMClass is the product name "DL: language lessons".
+    # The Wayland app id has to be the desktop-file id, which is build.appId.
+    substituteInPlace $out/share/applications/ro.go.hmlendea.DL-Desktop.desktop \
+      --replace-fail "StartupWMClass=DL: language lessons" "StartupWMClass=ro.go.hmlendea.DL-Desktop"
 
-    # The upstream PNG is 512x512. hicolor's 512x512/apps entry only matches
-    # requests of 64px and up, so menus that ask for a smaller size miss it.
-    iconName=ro.go.hmlendea.DL-Desktop
-    install -Dm644 icon.png $out/share/icons/hicolor/512x512/apps/$iconName.png
-    install -Dm644 icon.png $out/share/pixmaps/$iconName.png
-    for size in 16 22 24 32 36 48 64 72 96 128 192 256; do
-      dir=$out/share/icons/hicolor/''${size}x''${size}/apps
-      mkdir -p "$dir"
-      magick icon.png -resize "''${size}x''${size}" "$dir/$iconName.png"
-    done
+    install -Dm644 icon.png \
+      $out/share/icons/hicolor/512x512/apps/ro.go.hmlendea.DL-Desktop.png
 
-    # Unpackaged Electron otherwise uses the class "electron", which does not
-    # match StartupWMClass in the upstream desktop file.
+    # Without CHROME_DESKTOP Electron leaves the Wayland app id empty and
+    # GNOME looks up an Electron icon. The value is this desktop file's id.
     makeWrapper ${lib.getExe electron_42-bin} $out/bin/dl-desktop \
-      --add-flags "--class='DL: language lessons'" \
+      --set CHROME_DESKTOP "ro.go.hmlendea.DL-Desktop.desktop" \
+      --add-flags "--class=ro.go.hmlendea.DL-Desktop" \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
       --add-flags $out/share/dl-desktop
 
