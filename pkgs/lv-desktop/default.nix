@@ -18,16 +18,16 @@
 
 let
   pname = "lv-desktop";
-  version = "0.4.0";
+  version = "0.5.0";
 
   sources = {
     x86_64-linux = fetchurl {
       url = "https://github.com/oemaix/lv-desktop/releases/download/v${version}/lv-desktop-${version}.AppImage";
-      hash = "sha256-M38/M1FXLvxRdvtfoIggaaw8mSY/QjJ5/vb+/5VW+bQ=";
+      hash = "sha256-w2dne6yR09+fPoG7OFrzSnRSVPXW6glqpT8Ps73NbM0=";
     };
     aarch64-linux = fetchurl {
       url = "https://github.com/oemaix/lv-desktop/releases/download/v${version}/lv-desktop-${version}-arm64.AppImage";
-      hash = "sha256-3uO6unONEYBwSLfc6/JrXK5zLguns8SJvZxWxE/FDGM=";
+      hash = "sha256-18kd80/K1QwuSH8cKAi/TolMuV5+9EurMw19pvgm0SU=";
     };
   };
 
